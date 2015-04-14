@@ -6,5 +6,5 @@ The base of this template has the same core as any Windows program. Steps are ta
 
 2. The DirectSound library is being used for sound output. I am NOT using DirectSound8 and am instead simnply using the previous version. As a test, I am running a sine wave at 262Hz.
 
-3. The XInput library is implemented with this program. A wired Xbox 360 controller to test the vibrate functionality. For additional fun, pressing the A button will shift the gradient horizontally.
+3. The XInput library is implemented with this program. Plug in a wired Xbox 360 controller to test the vibrate functionality. For additional fun, pressing the A button will shift the gradient horizontally.
 
