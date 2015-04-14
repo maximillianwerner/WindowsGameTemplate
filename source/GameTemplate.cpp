@@ -178,11 +178,10 @@ internal void RGBRenderer(OffscreenBuffer *Buffer, int xOffset, int yOffset)
 		uint32_t *Pixel = (uint32_t *)Row;
 		for(int x = 0; x < Buffer->Width; ++x)
 		{
-			uint8_t Blue = (x + xOffset);
+			uint8_t Red = (x + xOffset);
 			uint8_t Green = (y + yOffset);
 			
-			*Pixel++ = ((Blue << 16) | Green);
-			//*Pixel++ = ((Green << 8) | Blue);
+			*Pixel++ = ((Red << 16) | (Green << 8));
 		}
 		Row += Buffer->Pitch;
 	}	
@@ -218,7 +217,7 @@ internal void RedrawDIBSection(OffscreenBuffer *Buffer, int Width, int Height)
 }
 
 //Copy the buffer to the window
-internal void Win32UpdateWindow(OffscreenBuffer *Buffer, HDC DeviceContext, int WindowWidth, int WindowHeight)
+internal void UpdateWindow(OffscreenBuffer *Buffer, HDC DeviceContext, int WindowWidth, int WindowHeight)
 {	
 	//Scale the bitmap to the window (a rectangle to rectangle copy)
 	StretchDIBits(DeviceContext,
@@ -328,7 +327,7 @@ WinMainProcCallBack(
 			HDC DeviceContext = BeginPaint(Window, &Paint);
 			
 			WindowDimension Current = GetWindowDimension(Window);
-			Win32UpdateWindow(&RENDER_BUFFER, DeviceContext, Current.Width, Current.Height);
+			UpdateWindow(&RENDER_BUFFER, DeviceContext, Current.Width, Current.Height);
 			
 			//marks the end of the painting
 			EndPaint(Window, &Paint);
@@ -515,8 +514,8 @@ int CALLBACK WinMain(HINSTANCE Instance, HINSTANCE PrevInstance, LPSTR CmdLine, 
 				
 				//Vibration test
 				XINPUT_VIBRATION GoodVibes;
-				GoodVibes.wLeftMotorSpeed = 60000;
-				GoodVibes.wRightMotorSpeed = 60000;
+				GoodVibes.wLeftMotorSpeed = 50000;
+				GoodVibes.wRightMotorSpeed = 50000;
 				XInputSetState(0, &GoodVibes);
 				
 				RGBRenderer(&RENDER_BUFFER, xOffset, yOffset);
@@ -552,7 +551,7 @@ int CALLBACK WinMain(HINSTANCE Instance, HINSTANCE PrevInstance, LPSTR CmdLine, 
 				}
 				
 				WindowDimension Current = GetWindowDimension(Window);
-				Win32UpdateWindow(&RENDER_BUFFER, DeviceContext, Current.Width, Current.Height);
+				UpdateWindow(&RENDER_BUFFER, DeviceContext, Current.Width, Current.Height);
 				xOffset++;
 			}	
 		}
